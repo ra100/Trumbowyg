@@ -941,7 +941,7 @@ jQuery.trumbowyg = {
         createLink: function () {
             var t = this,
                 documentSelection = t.doc.getSelection(),
-                node = documentSelection.extentNode,
+                node = documentSelection.focusNode,
                 url,
                 title,
                 target;
@@ -996,9 +996,9 @@ jQuery.trumbowyg = {
         unlink: function () {
             var t = this,
                 documentSelection = t.doc.getSelection(),
-                node = documentSelection.extentNode;
+                node = documentSelection.focusNode;
 
-            if (documentSelection.type === 'Caret') {
+            if (documentSelection.isCollapsed) {
                 while (['A', 'DIV'].indexOf(node.nodeName) < 0) {
                     node = node.parentNode;
                 }
