@@ -410,6 +410,7 @@ jQuery.trumbowyg = {
         // Admit multiple paste handlers
         t.pasteHandlers = [].concat(t.o.pasteHandlers);
 
+        t.semanticWait = false;
         t.init();
     };
 
@@ -524,6 +525,7 @@ jQuery.trumbowyg = {
                         } catch (c) {
                         }
                     }
+                    t.semanticWait = false;
                 })
                 .on('keyup', function (e) {
                     if (e.which >= 37 && e.which <= 40) {
@@ -949,6 +951,10 @@ jQuery.trumbowyg = {
         // @param full  : wrap text nodes in <p>
         semanticCode: function (force, full) {
             var t = this;
+            
+            if (t.semanticWait) {
+                return;
+            }
             t.saveRange();
             t.syncCode(force);
 
@@ -996,6 +1002,14 @@ jQuery.trumbowyg = {
                         }
                         return $(this).text().trim().length === 0 && $(this).children().not('br,span').length === 0;
                     }).contents().unwrap();
+
+                    t.$ed.find('span').filter(function () {
+                        return (typeof $(this).attr('style') !== undefined);
+                    }).contents().unwrap();
+                    
+                    t.$ed.find('[style]').each(function () {
+                        $(this).removeAttr('style');
+                    });
 
                     // Get rid of temporial span's
                     $('[data-tbw]', t.$ed).contents().unwrap();
@@ -1157,7 +1171,9 @@ jQuery.trumbowyg = {
                     }
 
                     t.doc.execCommand(cmd, false, param);
-
+                    if (['em', 'strong'].indexOf(param) >= 0) {
+                        t.semanticWait = true;
+                    }
                     t.syncCode();
                     t.semanticCode(false, true);
                 }
