@@ -178,9 +178,9 @@ jQuery.trumbowyg = {
          *      foo: {}
          * is equivalent to :
          *      foo: {
-             *          fn: 'foo',
-             *          title: this.lang.foo
-             *      }
+         *          fn: 'foo',
+         *          title: this.lang.foo
+         *      }
          */
         var h = t.lang.header, // Header translation
             isBlinkFunction = function () {
@@ -951,7 +951,7 @@ jQuery.trumbowyg = {
         // @param full  : wrap text nodes in <p>
         semanticCode: function (force, full) {
             var t = this;
-            
+
             if (t.semanticWait) {
                 return;
             }
@@ -1003,13 +1003,9 @@ jQuery.trumbowyg = {
                         return $(this).text().trim().length === 0 && $(this).children().not('br,span').length === 0;
                     }).contents().unwrap();
 
-                    t.$ed.find('span').filter(function () {
-                        return (typeof $(this).attr('style') !== undefined);
-                    }).contents().unwrap();
-                    
-                    t.$ed.find('[style]').each(function () {
-                        $(this).removeAttr('style');
-                    });
+                    t.$ed.find('span[style]').contents().unwrap();
+
+                    t.$ed.find('[style]').removeAttr('style');
 
                     // Get rid of temporial span's
                     $('[data-tbw]', t.$ed).contents().unwrap();
@@ -1217,9 +1213,9 @@ jQuery.trumbowyg = {
 
             // Build the form
             var $form = $('<form/>', {
-                action: '',
-                html: content
-            })
+                    action: '',
+                    html: content
+                })
                 .on('submit', function () {
                     $modal.trigger('tbwconfirm');
                     return false;
@@ -1232,9 +1228,9 @@ jQuery.trumbowyg = {
 
             // Build ModalBox and animate to show them
             var $box = $('<div/>', {
-                class: prefix + 'modal-box',
-                html: $form
-            })
+                    class: prefix + 'modal-box',
+                    html: $form
+                })
                 .css({
                     top: '-' + t.$btnPane.outerHeight() + 'px',
                     opacity: 0
@@ -1463,8 +1459,7 @@ jQuery.trumbowyg = {
                         $btn = $('.' + prefix + 'dropdown .' + prefix + btnName + '-dropdown-button', t.$box);
                         var dropdownBtnName = $btn.parent().data('dropdown');
                         $('.' + prefix + dropdownBtnName + '-button', t.$box).addClass(activeClasses);
-                    } catch (e) {
-                    }
+                    } catch (e) {}
                 }
             });
         },
